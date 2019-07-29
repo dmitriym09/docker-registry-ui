@@ -1,13 +1,36 @@
 'use strict';
 
-const REGISTRY = process.env.REGISTRY || 'localhost:5000';
-const HTTPS = 'HTTPS' in process.env;
-
-const fetch = require('node-fetch');
-
 const {
     spawn
 } = require('child_process');
+
+const fs = require('fs');
+const path = require('path');
+
+const fetch = require('node-fetch');
+
+const REGISTRY = process.env.REGISTRY || 'localhost:5000';
+const HTTPS = 'HTTPS' in process.env;
+
+const etcDocker = '/etc/docker';
+
+if(!!!HTTPS && REGISTRY !== 'localhost:5000') {
+    let val = {'insecure-registries': [REGISTRY]};
+    if (!fs.existsSync(etcDocker)) {
+        fs.mkdirSync(etcDocker)
+    }
+    const daemonFile = path.join(etcDocker, 'daemon.json');
+    if(fs.existsSync(daemonFile)) {
+        val = JSON.parse(fs.readFileSync(daemonFile, 'utf8'));
+        if(!!!val['insecure-registries']) {
+            val['insecure-registries'] = [];
+        }
+
+        val['insecure-registries'].push(REGISTRY);
+    }
+
+    fs.writeFileSync(daemonFile, JSON.stringify(val), 'utf-8');
+}
 
 const execute = (cmd, attrs, onStdOut = null) => {
     return new Promise((resolve, reject) => {
