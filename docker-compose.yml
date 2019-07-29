@@ -7,4 +7,15 @@ services:
       - 5000:5000
     volumes:
       - ./volumes/registry:/var/lib/registry
-    #restart always
+    restart: always
+
+  ui:
+    image: dmitriym09/docker-registry-ui:latest
+    ports:
+      - 8080:8080
+    restart: always
+    environment:
+      REGISTRY: registry:5000
+    volumes:
+      - ./volumes/ui/docker:/var/lib/docker
+    privileged: true
