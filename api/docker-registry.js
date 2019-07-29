@@ -1,5 +1,8 @@
 'use strict';
 
+const REGISTRY = process.env.REGISTRY || 'localhost:5000';
+const HTTPS = 'HTTPS' in process.env;
+
 const fetch = require('node-fetch');
 
 const {
@@ -50,7 +53,7 @@ const execute = (cmd, attrs, onStdOut = null) => {
 
 module.exports.catalog = () => {
     return new Promise((resolve, reject) => {
-        fetch('http://localhost:5000/v2/_catalog')
+        fetch(`http${HTTPS ? 's' : ''}://${REGISTRY}/v2/_catalog`)
             .then((res) => {
                 if (res.status != 200) {
                     throw new Error(res.status);
@@ -59,7 +62,7 @@ module.exports.catalog = () => {
             })
             .then((catalog) => {
                 return Promise.all(catalog.repositories.map((repoName) => {
-                    return fetch(`http://localhost:5000/v2/${repoName}/tags/list`);
+                    return fetch(`http${HTTPS ? 's' : ''}://${REGISTRY}/v2/${repoName}/tags/list`);
                 }));
             })
             .then((resultes) => {
@@ -79,7 +82,7 @@ module.exports.catalog = () => {
 
 module.exports.manifests = (repoName, tag) => {
     return new Promise((resolve, reject) => {
-        fetch(`http://localhost:5000/v2/${repoName}/manifests/${tag}`)
+        fetch(`http${HTTPS ? 's' : ''}://${REGISTRY}/v2/${repoName}/manifests/${tag}`)
             .then((res) => {
                 if (res.status != 200) {
                     throw new Error(res.status);
@@ -101,7 +104,7 @@ module.exports.manifests = (repoName, tag) => {
 };
 
 module.exports.save = (repoName, tag, response) => {
-    const name = `localhost:5000/${repoName}:${tag}`;
+    const name = `${REGISTRY}/${repoName}:${tag}`;
     return new Promise((resolve, reject) => {
         execute('docker', ['pull', name])
             .then((res) => {
@@ -154,7 +157,7 @@ module.exports.load = (imgPath) => {
                     .split(':');
 
 
-                tagName = `localhost:5000/${repo}:${tag}`;
+                tagName = `${REGISTRY}/${repo}:${tag}`;
                 return execute('docker', ['tag', imageName, tagName]);
             })
             .then((res) => {
