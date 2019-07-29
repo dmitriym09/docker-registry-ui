@@ -43,7 +43,6 @@
         alert("Error load");
       })
       .finally(() => {
-        //isBlocked.set(false);
         updateDockerImgs.set(Date.now());
       });
   };
