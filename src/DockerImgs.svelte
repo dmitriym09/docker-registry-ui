@@ -63,23 +63,11 @@
                 return res.json();
             })
             .then((data) => {
-				/*for(let i = 0; i < 100; ++i) {
-					const key = `${Date.now()}-${i}`;
-					data[key] = ['latest'];
-					for(let j = 0; j < 5; ++j) {
-						data[key].push(j * i);
-					}
-				}*/
-
-				//for(let i = 0; i < 10; i++) {
 					catalogs = Object.keys(data).sort();
-					//catalogs.push(...Object.keys(data).sort());
-
 					tags = catalogs.reduce((acm, key) => {
 							acm[key] = data[key].sort();
 							return acm;
 						}, {});
-				//}
 			})
 			.catch((err) => {
 				console.warn(err);
@@ -169,6 +157,11 @@
 			width: 45%;
 			text-align: center;
 		}
+	}
+
+	p {
+		text-align: center;
+		font-style: italic;
 	}
 </style>
 
