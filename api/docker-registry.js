@@ -29,7 +29,7 @@ const execute = (cmd, attrs, onStdOut = null) => {
         });
 
         proc.on('close', (code) => {
-            console.log(`child process exited with code ${code}`);
+            console.log(`${cmd} exited with code ${code}`);
             if (!!err) {
                 return reject({
                     stderr: Buffer.concat(stderr).toString(),
@@ -125,7 +125,6 @@ module.exports.save = (repoName, tag, response) => {
                 return Promise.resolve();
             })
             .then((res) => {
-                console.log(res);
                 resolve();
             })
             .catch(reject);
@@ -133,6 +132,11 @@ module.exports.save = (repoName, tag, response) => {
 }
 
 module.exports.load = (imgPath) => {
+    let imageName = null;
+    let repo = null;
+    let tag = null;
+    let tagName = null;
+
     return new Promise((resolve, reject) => {
         execute('docker', ['load', '-i', imgPath])
             .then((res) => {
@@ -140,19 +144,31 @@ module.exports.load = (imgPath) => {
                     throw new Error(res.err || res.stderr || res.stdout);
                 }
 
-                const [repo, tag] = res
+                imageName = res
                     .stdout
                     .replace(/^Loaded image: /, '')
-                    .trim()
+                    .trim();
+
+                [repo, tag] = imageName
                     .split('/')[1]
                     .split(':');
 
-                console.log(repo, tag);
-                return Promise.resolve();
+
+                tagName = `localhost:5000/${repo}:${tag}`;
+                return execute('docker', ['tag', imageName, tagName]);
             })
-            .then(() => {})
             .then((res) => {
-                console.log(res);
+                if (res.code != 0) {
+                    throw new Error(res.err || res.stderr || res.stdout);
+                }
+
+                return execute('docker', ['push', tagName]);
+            })
+            .then((res) => {
+                if (res.code != 0) {
+                    throw new Error(res.err || res.stderr || res.stdout);
+                }
+
                 resolve();
             })
             .catch(reject);

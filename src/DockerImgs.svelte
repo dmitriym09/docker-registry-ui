@@ -4,6 +4,8 @@
 	export let active = false;
 	export let table = null;
 
+	import { isBlocked } from './stores.js';
+
 	let cntRows = 0;
 	const createRow = (row) => {
 		row.setAttribute('data-pos', cntRows++);
@@ -51,6 +53,8 @@
 	};
 
 	const catalog = () => {
+		isBlocked.set(true);
+
 		fetch('/api/catalog')
 		.then((res) => {
                 if (res.status != 200) {
@@ -80,6 +84,9 @@
 			.catch((err) => {
 				console.warn(err);
 			})
+			.finally(() => {
+				isBlocked.set(false);
+			});
 	};
 
 	catalog();
@@ -180,5 +187,7 @@
 			</tr>
 		{/each}
 	</tbody>
+	{:else}
+	<p>Docker images not found</p>
 	{/each}
 </table>

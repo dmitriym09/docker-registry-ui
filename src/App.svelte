@@ -1,8 +1,9 @@
 <script>
-  import Header from './Header.svelte';
-  import DockerImgs from './DockerImgs.svelte';
-  import Save from './Save.svelte';
-  import Load from './Load.svelte';
+  import Header from "./Header.svelte";
+  import DockerImgs from "./DockerImgs.svelte";
+  import Save from "./Save.svelte";
+  import Load from "./Load.svelte";
+  import Blocker from "./Blocker.svelte";
 
   export let table = null;
 </script>
@@ -30,9 +31,12 @@
 
 <div class="page">
   <Header />
-  <section class="main" >
-	  <DockerImgs bind:table={table}></DockerImgs>
-    <Load table={table}></Load>
-    <Save table={table}></Save>
-  <section>
+  <section class="main">
+    <DockerImgs bind:table />
+    <Load {table} />
+    <Save {table} />
+    <section />
+  </section>
+
+  <Blocker />
 </div>

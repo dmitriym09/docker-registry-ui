@@ -3,6 +3,8 @@
   export let input = null;
   export let btn = null;
 
+  import { isBlocked } from './stores.js';
+
   const onChange = event => {
     if (input.files.length == 0) {
       return;
@@ -13,13 +15,10 @@
     for (const file of input.files) {
       const formData = new FormData();
       formData.append("file", file);
-      //formData.append('dst', dst);
-      //formData.append('mkdir', config.mkdir);
-      //formData.append('rewrite', config.rewrite);
       forms.push(formData);
     }
 
-    btn.disabled = true;
+    isBlocked.set(true);
 
     Promise.all(
       forms.map(form => {
@@ -43,7 +42,7 @@
         alert("Error load");
       })
       .finally(() => {
-        btn.disabled = false;
+        isBlocked.set(false);
       });
   };
 </script>

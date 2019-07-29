@@ -2,12 +2,13 @@
   export let table = null;
   export let btn = null;
 
+  import { isBlocked } from './stores.js';
+
   const download = uri => {
     return new Promise(resolve => {
       let filename = null;
       fetch(uri)
         .then(res => {
-          //console.log(res.headers['content-disposition'])
           const regex = /filename[^;=\n]*=(UTF-8(['"]*))?(.*)/;
           const matches = regex.exec(res.headers.get("content-disposition"));
 
@@ -29,7 +30,7 @@
           }, 100);
         })
         .catch(err => {
-          console.warn();
+          console.warn(err);
           alert(`Error download ${uri}`);
         })
         .finally(resolve);
@@ -41,11 +42,11 @@
     if (actives.length == 0) {
       return alert("Not select images");
     }
-    btn.disabled = true;
+    isBlocked.set(true);
 
     const _download = () => {
       if (actives.length == 0) {
-        btn.disabled = false;
+        isBlocked.set(false);
 
         return;
       }
