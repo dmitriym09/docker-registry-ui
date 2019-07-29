@@ -5,6 +5,8 @@
 
   import { isBlocked, updateDockerImgs } from "./stores.js";
 
+  import { dispatch } from './helpers/eventbus.js'
+
   const onChange = event => {
     if (input.files.length == 0) {
       return;
@@ -44,6 +46,8 @@
       })
       .finally(() => {
         updateDockerImgs.set(Date.now());
+
+        dispatch('dockerimgs:update');
       });
   };
 </script>

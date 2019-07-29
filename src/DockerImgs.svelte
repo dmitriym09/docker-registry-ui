@@ -92,6 +92,8 @@
   const unsubscribe = updateDockerImgs.subscribe(value => {
     catalog();
   });
+
+  const update= ()=>{console.log('update')}
 </script>
 
 <style>
@@ -180,6 +182,8 @@
     font-style: italic;
   }
 </style>
+
+<svelte:window on:dockerimgs:update={update} />
 
 <table bind:this={table}>
   {#each catalogs as catalog}
