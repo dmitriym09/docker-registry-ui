@@ -3,7 +3,7 @@
   export let input = null;
   export let btn = null;
 
-  import { isBlocked } from './stores.js';
+  import { isBlocked, updateDockerImgs } from "./stores.js";
 
   const onChange = event => {
     if (input.files.length == 0) {
@@ -19,6 +19,7 @@
     }
 
     isBlocked.set(true);
+
 
     Promise.all(
       forms.map(form => {
@@ -42,7 +43,8 @@
         alert("Error load");
       })
       .finally(() => {
-        isBlocked.set(false);
+        //isBlocked.set(false);
+        updateDockerImgs.set(Date.now());
       });
   };
 </script>
