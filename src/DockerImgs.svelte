@@ -4,7 +4,7 @@
   export let active = false;
   export let table = null;
 
-  import { isBlocked, updateDockerImgs } from "./stores.js";
+  import { isBlocked } from "./stores.js";
 
   let cntRows = 0;
   const createRow = row => {
@@ -55,7 +55,7 @@
 
   let isCatalogFetch = false;
 
-  const catalog = () => {
+  const refresh = () => {
     if (isCatalogFetch) {
       return;
     }
@@ -87,13 +87,7 @@
       });
   };
 
-  catalog();
-
-  const unsubscribe = updateDockerImgs.subscribe(value => {
-    catalog();
-  });
-
-  const update= ()=>{console.log('update')}
+  refresh();
 </script>
 
 <style>
@@ -183,7 +177,7 @@
   }
 </style>
 
-<svelte:window on:dockerimgs:update={update} />
+<svelte:window on:dockerimgs:refresh={refresh} />
 
 <table bind:this={table}>
   {#each catalogs as catalog}

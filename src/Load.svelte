@@ -3,7 +3,7 @@
   export let input = null;
   export let btn = null;
 
-  import { isBlocked, updateDockerImgs } from "./stores.js";
+  import { isBlocked } from "./stores.js";
 
   import { dispatch } from './helpers/eventbus.js'
 
@@ -45,9 +45,7 @@
         alert("Error load");
       })
       .finally(() => {
-        updateDockerImgs.set(Date.now());
-
-        dispatch('dockerimgs:update');
+        dispatch('dockerimgs:refresh');
       });
   };
 </script>

@@ -1,3 +1,5 @@
-export const dispatch = (eventName) => {
-    window.dispatchEvent(new Event(eventName));
+export const dispatch = (eventName, data = undefined) => {
+    window.dispatchEvent(new CustomEvent(eventName), {
+        'detail': data
+    });
 };
