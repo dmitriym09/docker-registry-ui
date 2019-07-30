@@ -17,7 +17,7 @@ const etcDocker = '/etc/docker';
 if(!!!HTTPS && REGISTRY !== 'localhost:5000') {
     let val = {'insecure-registries': [REGISTRY]};
     if (!fs.existsSync(etcDocker)) {
-        fs.mkdirSync(etcDocker)
+        fs.mkdirSync(etcDocker);
     }
     const daemonFile = path.join(etcDocker, 'daemon.json');
     if(fs.existsSync(daemonFile)) {

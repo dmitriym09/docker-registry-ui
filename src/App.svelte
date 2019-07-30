@@ -3,20 +3,13 @@
   import DockerImgs from "./DockerImgs.svelte";
   import Save from "./Save.svelte";
   import Load from "./Load.svelte";
+  import CopyUrl from "./CopyUrl.svelte";
   import Blocker from "./Blocker.svelte";
 
   export let table = null;
 </script>
 
 <style>
-  :global(html),
-  :global(body) {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    min-width: 320px;
-    min-width: 240px;
-  }
   .page {
     background-color: #fff;
     margin: 0;
@@ -61,6 +54,7 @@
   </section>
 
   <div class="sticky">
+    <CopyUrl {table} />
     <Load {table} />
     <Save {table} />
   </div>

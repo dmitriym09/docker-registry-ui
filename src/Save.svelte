@@ -4,6 +4,8 @@
 
   import { isBlocked } from './stores.js';
 
+  let saving = !!(new URL(location).searchParams.get("save"));
+
   const download = uri => {
     return new Promise(resolve => {
       let filename = null;
@@ -23,8 +25,8 @@
           return res.blob();
         })
         .then(blob => {
-          var url = window.URL.createObjectURL(blob);
-          var a = document.createElement("a");
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
           a.href = url;
           a.download = filename;
           document.body.appendChild(a);
@@ -68,6 +70,13 @@
 
     _download();
   };
+
+  const onDockerimgsRefreshed = () => {
+    if(saving) {
+      saving = false;
+      click();
+    }
+  };
 </script>
 
 <style>
@@ -107,10 +116,13 @@
 
   @media (max-width: 767px) {
     button {
-      width: 38%;
+      width: 30%;
       margin: 0px;
+      text-overflow: ellipsis;
     }
   }
 </style>
+
+<svelte:window on:dockerimgs:refreshed={onDockerimgsRefreshed} />
 
 <button on:click={click} bind:this={btn}>Save</button>
