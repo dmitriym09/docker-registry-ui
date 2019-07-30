@@ -151,7 +151,10 @@
     width: 25%;
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 767px) {
+    table {
+      margin-bottom: 35px;
+    }
     tr {
       flex-direction: column;
       align-items: center;
