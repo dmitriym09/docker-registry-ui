@@ -1,6 +1,6 @@
 # Docker registry UI
 
-![Version](https://img.shields.io/badge/version-0.0.1-green.svg)
+![Version](https://img.shields.io/badge/version-0.0.2-green.svg)
 ![Stars](https://img.shields.io/docker/stars/dmitriym09/docker-registry-ui.svg)
 ![Pulls](https://img.shields.io/docker/pulls/dmitriym09/docker-registry-ui.svg)
 
