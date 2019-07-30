@@ -9,6 +9,10 @@
       let filename = null;
       fetch(uri)
         .then(res => {
+          if (res.status != 200) {
+            throw new Error(res.status);
+          }
+
           const regex = /filename[^;=\n]*=(UTF-8(['"]*))?(.*)/;
           const matches = regex.exec(res.headers.get("content-disposition"));
 
