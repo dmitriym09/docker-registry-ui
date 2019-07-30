@@ -1,69 +1,32 @@
-*Psst — looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*
+# Docker registry UI
 
----
+This is a [svelte](https://svelte.dev) web ui for private [docker registry](https://hub.docker.com/_/registry). Using Docker Registry HTTP API [V2](https://docs.docker.com/registry/spec/api/). 
 
-# svelte app
+Supported function:
+- list docker images;
+- load docker images from tar-archive;
+- save docker images to tar-archive.
 
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
+## Using
 
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
+Run with [docker registry](https://hub.docker.com/_/registry):
 
 ```bash
-npx degit sveltejs/template svelte-app
-cd svelte-app
+docker-compose up -d
 ```
 
-*Note that you will need to have [Node.js](https://nodejs.org) installed.*
+## Dev
 
-
-## Get started
-
-Install the dependencies...
+Run in dev mode:
 
 ```bash
-cd svelte-app
-npm install
-```
-
-...then start [Rollup](https://rollupjs.org):
-
-```bash
+npm ci
+docker-compose -f docker-compose.dev.yml up -d registry
 npm run dev
 ```
 
-Navigate to [localhost:5000](http://localhost:5000). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
-
-
-## Deploying to the web
-
-### With [now](https://zeit.co/now)
-
-Install `now` if you haven't already:
+Build prod and push in docker hub:
 
 ```bash
-npm install -g now
-```
-
-Then, from within your project folder:
-
-```bash
-cd public
-now
-```
-
-As an alternative, use the [Now desktop client](https://zeit.co/download) and simply drag the unzipped project folder to the taskbar icon.
-
-### With [surge](https://surge.sh/)
-
-Install `surge` if you haven't already:
-
-```bash
-npm install -g surge
-```
-
-Then, from within your project folder:
-
-```bash
-npm run build
-surge public
+npm run docker
 ```
