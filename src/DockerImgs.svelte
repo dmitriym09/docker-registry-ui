@@ -1,13 +1,16 @@
 <script>
   export let catalogs = [];
   export let tags = {};
-  export let active = false;
   export let table = null;
 
   import { isBlocked } from "./stores.js";
 
+  import { dispatch } from "./helpers/eventbus.js";
+
+  const selectedFromUrl = new Set(new URL(location).searchParams.getAll("row"));
+
   let cntRows = 0;
-  const createRow = row => {
+  const createRow = (row, a, b) => {
     row.setAttribute("data-pos", cntRows++);
   };
 
@@ -82,8 +85,10 @@
         console.warn(err);
       })
       .finally(() => {
+        selectedFromUrl.clear();
         isCatalogFetch = false;
         isBlocked.set(false);
+        dispatch('dockerimgs:refreshed');
       });
   };
 
@@ -189,7 +194,7 @@
       {#each tags[catalog] as tag}
         <tr
           use:createRow
-          class:active
+          class:active={selectedFromUrl.has(`${catalog}-${tag}`)}
           id={`${catalog}-${tag}`}
           on:click={onRowClicked}>
           <td class="catalog">{catalog}</td>

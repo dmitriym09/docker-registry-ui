@@ -90,9 +90,9 @@
 
   @media (max-width: 767px) {
     button {
-      position: sticky;
-      width: 38%;
+      width: 30%;
       margin: 0px;
+      text-overflow: ellipsis;
     }
   }
 </style>
