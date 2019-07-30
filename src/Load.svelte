@@ -38,7 +38,6 @@
             throw new Error(res.status);
           }
         }
-        return Promise.all(promises);
       })
       .catch(err => {
         console.warn(err);
