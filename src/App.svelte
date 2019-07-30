@@ -15,28 +15,55 @@
     margin: 0;
     padding: 0;
     min-width: 320px;
+    min-width: 240px;
   }
   .page {
     background-color: #fff;
-    height: 100%;
     margin: 0;
     padding: 0;
-    margin-bottom: -50px;
   }
-  .main {
+  section {
     margin: 0;
-    padding: 15px;
+    padding: 0;
+    width: 100%;
+    height: 100%;
   }
+
+  .sticky {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    padding-right: 20px;
+
+    position: sticky;
+    bottom: 10px;
+  }
+
+  @media (max-width: 767px) {
+    .page {
+      height: calc(100% - 75px);
+      margin-bottom: -75px;
+    }
+
+    .sticky {
+      justify-content: space-around;
+      padding-right: 0px;
+    }
+  }
+
 </style>
 
 <div class="page">
   <Header />
-  <section class="main">
+  <section>
     <DockerImgs bind:table />
-    <Load {table} />
-    <Save {table} />
-    <section />
   </section>
 
-  <Blocker />
+  <div class="sticky">
+    <Load {table} />
+    <Save {table} />
+  </div>
+
+<Blocker />
 </div>

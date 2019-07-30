@@ -53,14 +53,14 @@
 <style>
   button {
     display: block;
-    position: absolute;
-    bottom: 10%;
-    right: 20%;
     cursor: pointer;
+
+    width: 120px;
+    margin: 20px;
 
     background-color: #2696ecff;
     color: #fff;
-    border: none;
+    border: 1px solid #fff;
     border-radius: 3px;
 
     transition: background-color 0.2s ease-out, transform 0.2s ease-out;
@@ -87,6 +87,14 @@
 
   input {
     display: none;
+  }
+
+  @media (max-width: 767px) {
+    button {
+      position: sticky;
+      width: 38%;
+      margin: 0px;
+    }
   }
 </style>
 
