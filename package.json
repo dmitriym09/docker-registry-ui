@@ -25,6 +25,9 @@
     "dev:svelte": "run-p start:dev autobuild",
     "dev": "npm run autobuild & npm run backend:dev",
     "start": "sirv public --single",
-    "start:dev": "sirv public --single --dev"
+    "start:dev": "sirv public --single --dev",
+    "docker": "npm run build; docker build . -t docker-registry-ui; npm run docker:push:ver; npm run docker:push:latest",
+    "docker:push:latest": "docker tag docker-registry-ui dmitriym09/docker-registry-ui:latest; docker push dmitriym09/docker-registry-ui:latest",
+    "docker:push:ver": "docker tag docker-registry-ui \"dmitriym09/docker-registry-ui:$(node -p \"require('./package.json').version\")\"; docker push \"dmitriym09/docker-registry-ui:$(node -p \"require('./package.json').version\")\""
   }
 }
