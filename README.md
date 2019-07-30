@@ -2,7 +2,7 @@
 
 This is a [svelte](https://svelte.dev) web ui for private [docker registry](https://hub.docker.com/_/registry). Using Docker Registry HTTP API [V2](https://docs.docker.com/registry/spec/api/). 
 
-Supported function:
+Supported functions:
 - list docker images;
 - load docker images from tar-archive;
 - save docker images to tar-archive.
