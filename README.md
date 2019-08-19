@@ -1,6 +1,6 @@
 # Docker registry UI
 
-![Version](https://img.shields.io/badge/version-0.0.3-green.svg)
+![Version](https://img.shields.io/badge/version-0.0.5-green.svg)
 ![Stars](https://img.shields.io/docker/stars/dmitriym09/docker-registry-ui.svg)
 ![Pulls](https://img.shields.io/docker/pulls/dmitriym09/docker-registry-ui.svg)
 
@@ -41,3 +41,4 @@ npm run docker
 - **0.0.2**
 - **0.0.3** - add rmi, tag sort
 - **0.0.4** - fix parese load
+- **0.0.5** - fix blocker position

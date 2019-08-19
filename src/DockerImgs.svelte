@@ -120,11 +120,7 @@
             (l, r) => l.history[0].v1Compatibility.created - r.history[0].v1Compatibility.created
           );
         }
-
-        //console.log(_tags)
-
-        //console.log(_tags['registry'][0].history[0].v1Compatibility.created)
-
+        
         catalogs = _catalogs;
         tags = _tags;
       })
