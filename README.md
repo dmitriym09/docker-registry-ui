@@ -40,3 +40,4 @@ npm run docker
 - **0.0.1** - init
 - **0.0.2**
 - **0.0.3** - add rmi, tag sort
+- **0.0.4** - fix parese load

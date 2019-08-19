@@ -215,6 +215,7 @@ module.exports.load = (imgPath) => {
 
                 imageName = res
                     .stdout
+                    .split('\n')[0]
                     .replace(/^Loaded image: /, '')
                     .trim();
 
