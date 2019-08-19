@@ -14,6 +14,8 @@ const HTTPS = 'HTTPS' in process.env;
 
 const dateFormat = require('date-format');
 
+const lockFile = require('lockfile');
+
 const etcDocker = '/etc/docker';
 
 if (!!!HTTPS && REGISTRY !== 'localhost:5000') {
@@ -35,6 +37,28 @@ if (!!!HTTPS && REGISTRY !== 'localhost:5000') {
 
     fs.writeFileSync(daemonFile, JSON.stringify(val), 'utf-8');
 }
+
+const lock = name => new Promise((resolve, reject) => {
+    name = name.replace(/[\\/]/g, '');
+    lockFile.lock(`${name}.lock`, {}, (err) => {
+        if (!!err) {
+            return reject(err);
+        }
+
+        resolve();
+    });
+});
+
+const unlock = name => new Promise((resolve, reject) => {
+    name = name.replace(/[\\/]/g, '');
+    lockFile.unlock(`${name}.lock`, (err) => {
+        if (!!err) {
+            return reject(err);
+        }
+
+        resolve();
+    });
+});
 
 const execute = (cmd, attrs, onStdOut = null) => {
     return new Promise((resolve, reject) => {
@@ -133,8 +157,10 @@ module.exports.manifests = (repoName, tag) => {
 module.exports.save = (repoName, tag, response) => {
     const name = `${REGISTRY}/${repoName}:${tag}`;
     return new Promise((resolve, reject) => {
-        execute('docker', ['pull', name])
+        lock(name)
+            .then(() => execute('docker', ['pull', name]))
             .then((res) => {
+                console.log('pull', name, res.code, `stdout: '${res.stdout}', stderr: '${res.stderr}'`);
                 if (res.code != 0) {
                     throw new Error(res.err || res.stderr || res.stdout);
                 }
@@ -151,13 +177,25 @@ module.exports.save = (repoName, tag, response) => {
             .then(() => {
                 response.end();
 
-                //TODO:  return execute('docker', ['rmi', name]);
-                return Promise.resolve();
+                return execute('docker', ['rmi', name]);
             })
             .then((res) => {
-                resolve();
+                console.log('rmi', name, res.code, `stdout: '${res.stdout}', stderr: '${res.stderr}'`);
+
+                if (res.code != 0) {
+                    throw new Error(res.err || res.stderr || res.stdout);
+                }
+
+                return Promise.resolve();
             })
-            .catch(reject);
+            .then(() => unlock(name))
+            .then(resolve)
+            .catch((err) => {
+                unlock(name)
+                    .finally(() => {
+                        reject(err)
+                    });
+            });
     });
 }
 
@@ -170,11 +208,10 @@ module.exports.load = (imgPath) => {
     return new Promise((resolve, reject) => {
         execute('docker', ['load', '-i', imgPath])
             .then((res) => {
+                console.log('load', imgPath, res.code, `stdout: '${res.stdout}', stderr: '${res.stderr}'`);
                 if (res.code != 0) {
                     throw new Error(res.err || res.stderr || res.stdout);
                 }
-
-                console.log(res.code, `stdout: '${res.stdout}', stderr: '${res.stderr}'`);
 
                 imageName = res
                     .stdout
@@ -183,11 +220,14 @@ module.exports.load = (imgPath) => {
 
                 const [repo, tag] = (imageName.split('/')[1] || imageName).split(':');
 
-
                 tagName = `${REGISTRY}/${repo}:${tag}`;
-                return execute('docker', ['tag', imageName, tagName]);
+
+                return lock(tagName);
             })
+            .then(() => execute('docker', ['tag', imageName, tagName]))
             .then((res) => {
+                console.log('tag', imageName, tagName, res.code, `stdout: '${res.stdout}', stderr: '${res.stderr}'`);
+
                 if (res.code != 0) {
                     throw new Error(res.err || res.stderr || res.stdout);
                 }
@@ -195,12 +235,28 @@ module.exports.load = (imgPath) => {
                 return execute('docker', ['push', tagName]);
             })
             .then((res) => {
+                console.log('push', tagName, res.code, `stdout: '${res.stdout}', stderr: '${res.stderr}'`);
+
+                if (res.code != 0) {
+                    throw new Error(res.err || res.stderr || res.stdout);
+                }
+                return execute('docker', ['rmi', tagName]);
+            })
+            .then((res) => {
+                console.log('rmi', tagName, res.code, `stdout: '${res.stdout}', stderr: '${res.stderr}'`);
                 if (res.code != 0) {
                     throw new Error(res.err || res.stderr || res.stdout);
                 }
 
-                resolve();
+                return Promise.resolve();
             })
-            .catch(reject);
+            .then(() => unlock(tagName))
+            .then(resolve)
+            .catch((err) => {
+                unlock(tagName)
+                    .finally(() => {
+                        reject(err)
+                    });
+            });
     });
 }
