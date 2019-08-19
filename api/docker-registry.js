@@ -183,7 +183,7 @@ module.exports.save = (repoName, tag, response) => {
                 console.log('rmi', name, res.code, `stdout: '${res.stdout}', stderr: '${res.stderr}'`);
 
                 if (res.code != 0) {
-                    throw new Error(res.err || res.stderr || res.stdout);
+                    console.warn('Error rmi', res.err || res.stderr || res.stdout);
                 }
 
                 return Promise.resolve();
@@ -245,7 +245,15 @@ module.exports.load = (imgPath) => {
             .then((res) => {
                 console.log('rmi', tagName, res.code, `stdout: '${res.stdout}', stderr: '${res.stderr}'`);
                 if (res.code != 0) {
-                    throw new Error(res.err || res.stderr || res.stdout);
+                    console.warn('Error rmi', res.err || res.stderr || res.stdout);
+                }
+
+                return execute('docker', ['rmi', imageName]);
+            })
+            .then((res) => {
+                console.log('rmi', imageName, res.code, `stdout: '${res.stdout}', stderr: '${res.stderr}'`);
+                if (res.code != 0) {
+                    console.warn('Error rmi', res.err || res.stderr || res.stdout);
                 }
 
                 return Promise.resolve();

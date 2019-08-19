@@ -104,4 +104,4 @@
   bind:this={btn}>
   Load
 </button>
-<input type="file" accept=".tar" on:change={onChange} bind:this={input} />
+<input type="file" accept=".tar" on:change={onChange} bind:this={input} multiple/>
