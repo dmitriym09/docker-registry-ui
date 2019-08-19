@@ -34,3 +34,9 @@ Build prod and push in docker hub:
 ```bash
 npm run docker
 ```
+
+## versions
+
+- **0.0.1** - init
+- **0.0.2**
+- **0.0.3** - add rmi, tag sort
