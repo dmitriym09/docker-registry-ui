@@ -14,15 +14,17 @@ const HTTPS = 'HTTPS' in process.env;
 
 const etcDocker = '/etc/docker';
 
-if(!!!HTTPS && REGISTRY !== 'localhost:5000') {
-    let val = {'insecure-registries': [REGISTRY]};
+if (!!!HTTPS && REGISTRY !== 'localhost:5000') {
+    let val = {
+        'insecure-registries': [REGISTRY]
+    };
     if (!fs.existsSync(etcDocker)) {
         fs.mkdirSync(etcDocker);
     }
     const daemonFile = path.join(etcDocker, 'daemon.json');
-    if(fs.existsSync(daemonFile)) {
+    if (fs.existsSync(daemonFile)) {
         val = JSON.parse(fs.readFileSync(daemonFile, 'utf8'));
-        if(!!!val['insecure-registries']) {
+        if (!!!val['insecure-registries']) {
             val['insecure-registries'] = [];
         }
 
@@ -170,14 +172,14 @@ module.exports.load = (imgPath) => {
                     throw new Error(res.err || res.stderr || res.stdout);
                 }
 
+                console.log(res.code, `stdout: '${res.stdout}', stderr: '${res.stderr}'`);
+
                 imageName = res
                     .stdout
                     .replace(/^Loaded image: /, '')
                     .trim();
 
-                [repo, tag] = imageName
-                    .split('/')[1]
-                    .split(':');
+                const [repo, tag] = (imageName.split('/')[1] || imageName).split(':');
 
 
                 tagName = `${REGISTRY}/${repo}:${tag}`;
