@@ -67,6 +67,9 @@
 
     isBlocked.set(true);
 
+    let _tags = null;
+    let _catalogs = null;
+
     fetch("/api/catalog")
       .then(res => {
         if (res.status != 200) {
@@ -75,20 +78,65 @@
         return res.json();
       })
       .then(data => {
-        catalogs = Object.keys(data).sort();
-        tags = catalogs.reduce((acm, key) => {
+        _catalogs = Object.keys(data).sort();
+        _tags = _catalogs.reduce((acm, key) => {
           acm[key] = data[key].sort();
           return acm;
         }, {});
+
+        return Promise.all(
+          _catalogs.reduce((acm, catalog) => {
+            acm.push(
+              ..._tags[catalog].map(tag =>
+                fetch(`/api/manifests?repo=${catalog}&tag=${tag}`)
+              )
+            );
+            return acm;
+          }, [])
+        );
+      })
+      .then(responses => {
+        return Promise.all(
+          responses.map(res => {
+            if (res.status != 200) {
+              throw new Error(res.status);
+            }
+            return res.json();
+          })
+        );
+      })
+      .then(manifests => {
+        for (const manifest of manifests) {
+          const tmp = _tags[manifest.name];
+          const pos = tmp.findIndex(tag => tag == manifest.tag);
+          tmp[pos] = manifest;
+        }
+
+        return Promise.resolve();
+      })
+      .then(() => {
+        for (const name in _tags) {
+          _tags[name].sort(
+            (l, r) => l.history[0].v1Compatibility.created - r.history[0].v1Compatibility.created
+          );
+        }
+
+        //console.log(_tags)
+
+        //console.log(_tags['registry'][0].history[0].v1Compatibility.created)
+
+        catalogs = _catalogs;
+        tags = _tags;
       })
       .catch(err => {
         console.warn(err);
+        alert("Error get images");
       })
       .finally(() => {
         selectedFromUrl.clear();
         isCatalogFetch = false;
         isBlocked.set(false);
-        dispatch('dockerimgs:refreshed');
+        dispatch("dockerimgs:refreshed");
       });
   };
 
@@ -149,12 +197,16 @@
   }
 
   td.catalog {
-    width: 65%;
+    width: 60%;
     text-align: center;
   }
 
   td.tag {
-    width: 25%;
+    width: 17%;
+  }
+
+  td.created {
+    width: 17%;
   }
 
   @media (max-width: 767px) {
@@ -173,9 +225,10 @@
     }
 
     td.catalog,
-    td.tag {
-      width: 45%;
-      width: 45%;
+    td.tag,
+    td.created {
+      width: 32%;
+      width: 32%;
       text-align: center;
     }
   }
@@ -198,7 +251,8 @@
           id={`${catalog}-${tag}`}
           on:click={onRowClicked}>
           <td class="catalog">{catalog}</td>
-          <td class="tag">{tag}</td>
+          <td class="tag">{tag.tag}</td>
+          <td class="created">{new Date(tag.history[0].v1Compatibility.created).toLocaleString()}</td>
         </tr>
       {/each}
     </tbody>

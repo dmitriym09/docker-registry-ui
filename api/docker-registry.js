@@ -12,6 +12,8 @@ const fetch = require('node-fetch');
 const REGISTRY = process.env.REGISTRY || 'localhost:5000';
 const HTTPS = 'HTTPS' in process.env;
 
+const dateFormat = require('date-format');
+
 const etcDocker = '/etc/docker';
 
 if (!!!HTTPS && REGISTRY !== 'localhost:5000') {
@@ -118,7 +120,7 @@ module.exports.manifests = (repoName, tag) => {
                 manifest.history = manifest.history.map((hist) => {
                     return Object.keys(hist).reduce((acm, key) => {
                         acm[key] = JSON.parse(hist[key]);
-
+                        acm[key].created = dateFormat.parse(dateFormat.ISO8601_FORMAT, acm[key].created).valueOf();
                         return acm;
                     }, {});
                 });
