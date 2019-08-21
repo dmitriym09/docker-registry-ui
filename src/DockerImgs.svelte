@@ -243,8 +243,8 @@
       {#each tags[catalog] as tag}
         <tr
           use:createRow
-          class:active={selectedFromUrl.has(`${catalog}-${tag}`)}
-          id={`${catalog}-${tag}`}
+          class:active={selectedFromUrl.has(`${catalog}-${tag.tag}`)}
+          id={`${catalog}-${tag.tag}`}
           on:click={onRowClicked}>
           <td class="catalog">{catalog}</td>
           <td class="tag">{tag.tag}</td>
