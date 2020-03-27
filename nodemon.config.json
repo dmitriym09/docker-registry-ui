@@ -1,8 +1,0 @@
-{
-	"verbose": true,
-	"watch": [
-		"index.js",
-		"api.js",
-		"api/*.js"
-	]
-}
