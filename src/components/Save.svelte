@@ -2,7 +2,7 @@
   export let table = null;
   export let btn = null;
 
-  import { isBlocked } from './stores.js';
+  import { isBlocked } from '../stores.js';
 
   let saving = !!(new URL(location).searchParams.get("save"));
 

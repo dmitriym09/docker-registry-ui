@@ -3,9 +3,9 @@
   export let input = null;
   export let btn = null;
 
-  import { isBlocked } from "./stores.js";
+  import { isBlocked } from "../stores.js";
 
-  import { dispatch } from './helpers/eventbus.js'
+  import { dispatch } from '../helpers/eventbus.js'
 
   const onChange = event => {
     if (input.files.length == 0) {

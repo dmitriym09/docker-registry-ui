@@ -1,11 +1,11 @@
 <script>
+    import { isBlocked } from "../stores.js";
+
+  import { dispatch } from "../helpers/eventbus.js";
+
   export let catalogs = [];
   export let tags = {};
   export let table = null;
-
-  import { isBlocked } from "./stores.js";
-
-  import { dispatch } from "./helpers/eventbus.js";
 
   const selectedFromUrl = new Set(new URL(location).searchParams.getAll("row"));
 
