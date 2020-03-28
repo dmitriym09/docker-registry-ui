@@ -8,68 +8,59 @@ const multer = require('multer');
 const upload = multer();
 
 const {
-    catalog,
-    manifests,
-    save,
-    load
+	catalog,
+	manifests,
+	save,
+	load
 } = require('./api/docker-registry');
 
 module.exports = (app) => {
-    app.get('/api/catalog', async (req, res) => {
-        try {
-            return res.json(await catalog());
-        } catch (err) {
-            console.warn(err);
-            return res.status(500).end();
-        }
-    });
+	app.get('/api/manifests', async (req, res) => {
+		if (!!!req.query.repo) {
+			return res.status(400).send('Not set query params repo');
+		}
 
-    app.get('/api/manifests', async (req, res) => {
-        if(!!!req.query.repo) {
-            return res.status(400).send('Not set query params repo');
-        }
+		if (!!!req.query.tag) {
+			return res.status(400).send('Not set query params tag');
+		}
 
-        if(!!!req.query.tag) {
-            return res.status(400).send('Not set query params tag');
-        }
+		try {
+			return res.json(await manifests(req.query.repo, req.query.tag));
+		} catch (err) {
+			console.warn(err);
+			return res.status(500).end();
+		}
+	});
 
-        try {
-            return res.json(await manifests(req.query.repo, req.query.tag));
-        } catch (err) {
-            console.warn(err);
-            return res.status(500).end();
-        }
-    });
+	app.get('/api/save', async (req, res) => {
+		if (!!!req.query.repo) {
+			return res.status(400).send('Not set query params repo');
+		}
 
-    app.get('/api/save', async (req, res) => {
-        if(!!!req.query.repo) {
-            return res.status(400).send('Not set query params repo');
-        }
+		if (!!!req.query.tag) {
+			return res.status(400).send('Not set query params tag');
+		}
 
-        if(!!!req.query.tag) {
-            return res.status(400).send('Not set query params tag');
-        }
+		try {
+			return res.json(await save(req.query.repo, req.query.tag, res));
+		} catch (err) {
+			console.warn(err);
+			return res.status(500).end();
+		}
+	});
 
-        try {
-            return res.json(await save(req.query.repo, req.query.tag, res));
-        } catch (err) {
-            console.warn(err);
-            return res.status(500).end();
-        }
-    });
+	app.post('/api/load', upload.any(), async (req, res) => {
+		try {
+			const tmpPath = path.join(os.tmpdir(), `${Math.random()}-${Date.now()}.tar`);
+			const file = req.files[0];
 
-    app.post('/api/load', upload.any(), async (req, res) => {
-        try {
-            const tmpPath = path.join(os.tmpdir(), `${Math.random()}-${Date.now()}.tar`);
-            const file = req.files[0];
-
-            await fs.promises.writeFile(tmpPath, file.buffer);
-            await load(tmpPath);
-            await fs.promises.unlink(tmpPath);
-        } catch (err) {
-            console.warn(err);
-            return res.status(500).end();
-        }
+			await fs.promises.writeFile(tmpPath, file.buffer);
+			await load(tmpPath);
+			await fs.promises.unlink(tmpPath);
+		} catch (err) {
+			console.warn(err);
+			return res.status(500).end();
+		}
 
 		/*if (dstRel.includes('..')) {
 			console.error(`Error dst`, dstRel);
@@ -132,6 +123,6 @@ module.exports = (app) => {
 			} else {
 				write();
 			}*/
-        res.status(201).end();
-    });
+		res.status(201).end();
+	});
 };
