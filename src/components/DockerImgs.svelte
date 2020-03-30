@@ -1,6 +1,9 @@
 <script>
-    import { isBlocked } from "../stores.js";
+  import { isBlocked, imgs } from "../stores.mjs";
 
+  import DockerImg from "./DockerImg.svelte";
+
+  /* 
   import { dispatch } from "../helpers/eventbus.js";
 
   export let catalogs = [];
@@ -120,7 +123,6 @@
             (l, r) => l.history[0].v1Compatibility.created - r.history[0].v1Compatibility.created
           );
         }
-        
         catalogs = _catalogs;
         tags = _tags;
       })
@@ -136,7 +138,7 @@
       });
   };
 
-  refresh();
+  refresh();*/
 </script>
 
 <style>
@@ -163,69 +165,9 @@
     border-bottom: none;
   }
 
-  tr {
-    display: flex;
-    margin: 0;
-    padding: 5px;
-    cursor: pointer;
-    justify-content: space-around;
-    transition: background-color 0.2s ease-out, transform 0.2s ease-out,
-      color 0.2s ease-out;
-  }
-
-  tr.active {
-    transform: scale(0.9);
-    background-color: #2696ec99;
-    color: #222;
-    border-radius: 3px;
-  }
-
-  tr:hover {
-    background-color: #2696ecff;
-    color: #eee;
-    border-radius: 3px;
-  }
-
-  td {
-    margin: 0;
-    padding: 0;
-    user-select: none;
-  }
-
-  td.catalog {
-    width: 60%;
-    text-align: center;
-  }
-
-  td.tag {
-    width: 17%;
-  }
-
-  td.created {
-    width: 17%;
-  }
-
   @media (max-width: 767px) {
     table {
       margin-bottom: 35px;
-    }
-    tr {
-      flex-direction: column;
-      align-items: center;
-      padding: 5px;
-    }
-
-    td {
-      margin: 0;
-      padding: 5px;
-    }
-
-    td.catalog,
-    td.tag,
-    td.created {
-      width: 32%;
-      width: 32%;
-      text-align: center;
     }
   }
 
@@ -235,21 +177,13 @@
   }
 </style>
 
-<svelte:window on:dockerimgs:refresh={refresh} />
+<!--<svelte:window on:dockerimgs:refresh={refresh} /> -->
 
-<table bind:this={table}>
-  {#each catalogs as catalog}
+<table>
+  {#each Object.keys($imgs) as name (name)}
     <tbody>
-      {#each tags[catalog] as tag}
-        <tr
-          use:createRow
-          class:active={selectedFromUrl.has(`${catalog}-${tag.tag}`)}
-          id={`${catalog}-${tag.tag}`}
-          on:click={onRowClicked}>
-          <td class="catalog">{catalog}</td>
-          <td class="tag">{tag.tag}</td>
-          <td class="created">{new Date(tag.history[0].v1Compatibility.created).toLocaleString()}</td>
-        </tr>
+      {#each $imgs[name] as tag (tag)}
+        <DockerImg {name} {tag} />
       {/each}
     </tbody>
   {:else}

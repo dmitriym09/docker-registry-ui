@@ -1,5 +1,5 @@
 <script>
-  import { isBlocked } from "../stores.js";
+  import { isBlocked } from "../stores.mjs";
 
   let isBlockedVal = false;
   const unsubscribe = isBlocked.subscribe(value => {

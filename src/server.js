@@ -2,6 +2,9 @@ import express from "express";
 
 import * as sapper from '@sapper/server';
 import sirv from 'sirv';
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const {
 	PORT,

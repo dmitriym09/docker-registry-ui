@@ -1,12 +1,48 @@
 <script>
+  import { onMount } from "svelte";
   import Header from "../components/Header.svelte";
   import DockerImgs from "../components/DockerImgs.svelte";
-  import Save from "../components/Save.svelte";
-  import Load from "../components/Load.svelte";
-  import CopyUrl from "../components/CopyUrl.svelte";
+  // import Save from "../components/Save.svelte";
+  // import Load from "../components/Load.svelte";
+  // import CopyUrl from "../components/CopyUrl.svelte";
   import Blocker from "../components/Blocker.svelte";
 
-  export let table = null;
+  import { isBlocked, imgs } from "../stores.mjs";
+
+  //export let table = null;
+
+  onMount(async () => {
+    const responsev2 = await fetch("/v2/");
+    if (responsev2.status != 200) {
+      throw new Error(); //TODO: impl
+    }
+    const contentv2 = await responsev2.json();
+    if (!(typeof contentv2 == "object" && Object.keys(contentv2).length == 0)) {
+      throw new Error(); //TODO: impl
+    }
+    const responseCatalog = await fetch("/v2/_catalog");
+    if (responseCatalog.status != 200) {
+      throw new Error(); //TODO: impl
+    }
+    const catalog = (await responseCatalog.json()).repositories.reduce(
+      (acm, name) => {
+        acm[name] = [];
+        return acm;
+      },
+      {}
+    );
+    const responsesTags = await Promise.all(
+      Object.keys(catalog).map(repo => fetch(`/v2/${repo}/tags/list`))
+    );
+    for (const response of responsesTags) {
+      const content = await response.json();
+      catalog[content.name] = content.tags;
+    }
+
+    $imgs = catalog;
+
+    $isBlocked = false;
+  });
 </script>
 
 <style>
@@ -121,14 +157,14 @@
 <div class="page">
   <Header />
   <section>
-    <DockerImgs bind:table />
+    <DockerImgs />
   </section>
 
-  <div class="sticky">
+  <!--<div class="sticky">
     <CopyUrl {table} />
     <Load {table} />
     <Save {table} />
-  </div>
+  </div>-->
 
   <Blocker />
 </div>

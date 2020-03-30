@@ -16,7 +16,7 @@ export default function (req, res) {
             resp.pipe(res);
 
             resp.on('end', () => {
-                console.error(`Finish requst to registry ${req.REGISTRY_HOST}:${req.REGISTRY_PORT}${req.url} / ${Date.now() - startDt} msec`);
+                console.error(`Finish requst to registry ${req.REGISTRY_HOST}:${req.REGISTRY_PORT}${req.url} ${resp.statusCode} / ${Date.now() - startDt} msec`);
                 resolve();
             });
         });
