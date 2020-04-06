@@ -30,6 +30,9 @@
 </script>
 
 <style>
+  td {
+    vertical-align: middle;
+  }
   /*tr {
     margin: 0;
     padding: 5px;
@@ -47,11 +50,16 @@
 
   td.created {
   }
+*/
 
-  button,
-  a {
+  .btn {
     cursor: pointer;
-  }*/
+  }
+
+  svg {
+    height: 1rem;
+    width: 1rem;
+  }
 </style>
 
 <tr>
@@ -60,14 +68,17 @@
     {!!manifests ? manifests.history[0].v1Compatibility.created.toLocaleString() : ''}
   </td>
   <td class="copy-name">
-    <button class="btn-copy" aria-label="Copy name" on:click={copyName}>
-      copy
+    <button class="btn btn-copy" aria-label="Copy name" on:click={copyName}>
+      <svg viewBox="-40 0 512 512"><use href="#copy-icon" /></svg>
     </button>
   </td>
 
   <td class="info">
-    <a class="a-desc" aria-label="Open info" href="/desc?name={name}&tag={tag}">
-      info
+    <a
+      class="btn a-desc"
+      aria-label="Open info"
+      href="/desc?name={name}&tag={tag}">
+      <svg viewBox="-40 0 431.45258 431.45258"><use href="#info-icon" /></svg>
     </a>
   </td>
 </tr>

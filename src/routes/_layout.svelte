@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import Svg from "../components/Svg.svelte";
   import Header from "../components/Header.svelte";
   import DockerImgs from "../components/DockerImgs.svelte";
   // import Save from "../components/Save.svelte";
@@ -171,3 +172,5 @@
 
   <Blocker />
 </div>
+
+<Svg />
