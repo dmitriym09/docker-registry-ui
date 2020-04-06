@@ -24,7 +24,11 @@
       Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
   }
 
-  :global(a) {
+  :global(h1) {
+    text-align: center;
+  }
+
+  /*:global(a) {
     color: rgb(0, 100, 200);
     text-decoration: none;
   }
@@ -74,7 +78,7 @@
 
   :global(button:focus) {
     border-color: #666;
-  }
+  }*/
 
   .page {
     background-color: #fff;
@@ -112,4 +116,5 @@
   }
 </style>
 
+<h1>Images</h1>
 <DockerImgs />

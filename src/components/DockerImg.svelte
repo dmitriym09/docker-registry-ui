@@ -30,7 +30,7 @@
 </script>
 
 <style>
-  tr {
+  /*tr {
     margin: 0;
     padding: 5px;
   }
@@ -51,7 +51,7 @@
   button,
   a {
     cursor: pointer;
-  }
+  }*/
 </style>
 
 <tr>
@@ -59,13 +59,13 @@
   <td class="created">
     {!!manifests ? manifests.history[0].v1Compatibility.created.toLocaleString() : ''}
   </td>
-  <td class="copy">
+  <td class="copy-name">
     <button class="btn-copy" aria-label="Copy name" on:click={copyName}>
       copy
     </button>
   </td>
 
-  <td class="desc">
+  <td class="info">
     <a class="a-desc" aria-label="Open info" href="/desc?name={name}&tag={tag}">
       info
     </a>

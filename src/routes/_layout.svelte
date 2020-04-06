@@ -124,14 +124,16 @@
     padding: 0;
   }
 
-  section {
-    margin: 0;
+  main {
+    margin: 0 auto;
     padding: 0;
     width: 100%;
-    height: 100%;
+    max-width: 50rem;
+    min-width: 20rem;
+    min-height: 100%;
   }
 
-  .sticky {
+  /*.sticky {
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -152,14 +154,14 @@
       justify-content: space-around;
       padding-right: 0px;
     }
-  }
+  }*/
 </style>
 
 <div class="page">
   <Header />
-  <section>
+  <main>
     <slot />
-  </section>
+  </main>
 
   <!--<div class="sticky">
     <CopyUrl {table} />

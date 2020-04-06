@@ -143,6 +143,39 @@
 
 <style>
   table {
+    border-collapse: collapse;
+  }
+  table :global(tr) {
+    border-bottom: 1px solid lightgray;
+  }
+  table :global(tbody:last-child tr:last-child) {
+    border-bottom: none;
+  }
+
+  th {
+    text-align: left;
+    vertical-align: middle;
+    padding-bottom: 0.5rem;
+  }
+  table :global(.name) {
+    width: 50%;
+  }
+
+  table :global(.created) {
+    width: 25%;
+  }
+
+  table :global(.copy-name) {
+    width: 10%;
+    text-align: right;
+  }
+
+  table :global(.info) {
+    width: 10%;
+    text-align: right;
+  }
+
+  /*table {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -174,19 +207,27 @@
   p {
     text-align: center;
     font-style: italic;
-  }
+  }*/
 </style>
 
 <!--<svelte:window on:dockerimgs:refresh={refresh} /> -->
 
 <table>
-  {#each Object.keys($imgs) as name (name)}
-    <tbody>
+  <thead>
+    <tr>
+      <th class="name">Name</th>
+      <th class="created">Created</th>
+      <th class="copy-name">Copy name</th>
+      <th class="info">Info</th>
+    </tr>
+  </thead>
+  <tbody>
+    {#each Object.keys($imgs) as name (name)}
       {#each $imgs[name] as tag (tag)}
         <DockerImg {name} {tag} />
       {/each}
-    </tbody>
-  {:else}
-    <p>Docker images not found</p>
-  {/each}
+    {:else}
+      <p>Docker images not found</p>
+    {/each}
+  </tbody>
 </table>
