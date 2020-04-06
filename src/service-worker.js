@@ -32,7 +32,7 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-	if (event.request.method !== 'GET' || event.request.headers.has('range')) return;
+	/*if (event.request.method !== 'GET' || event.request.headers.has('range')) return;
 
 	const url = new URL(event.request.url);
 
@@ -56,7 +56,7 @@ self.addEventListener('fetch', event => {
 		event.respondWith(caches.match('/service-worker-index.html'));
 		return;
 	}
-	*/
+	* /
 
 	if (event.request.cache === 'only-if-cached') return;
 
@@ -78,5 +78,5 @@ self.addEventListener('fetch', event => {
 					throw err;
 				}
 			})
-	);
+	);*/
 });

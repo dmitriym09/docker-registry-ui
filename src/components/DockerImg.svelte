@@ -1,23 +1,38 @@
 <script>
+  import { onMount } from "svelte";
+  import getManifests from "../helpers/manifests.mjs";
+
   export let name;
   export let tag;
+
+  let manifests;
+
+  onMount(async () => {
+    //TODO: try
+    manifests = await getManifests(name, tag);
+  });
+
+  async function copyName() {
+    const result = await navigator.permissions.query({
+      name: "clipboard-write"
+    });
+    if (result.state == "granted" || result.state == "prompt") {
+      //TODO: exrernal registry name
+      const item = new ClipboardItem({
+        "text/plain": new Blob([`${name}:${tag}`], { type: "text/plain" })
+      });
+      await navigator.clipboard.write([item]);
+      //TODO: notify
+    } else {
+      //TODO: notify
+    }
+  }
 </script>
 
 <style>
   tr {
-    display: flex;
     margin: 0;
     padding: 5px;
-    cursor: pointer;
-    justify-content: space-around;
-    transition: background-color 0.2s ease-out, transform 0.2s ease-out,
-      color 0.2s ease-out;
-  }
-
-  tr:hover {
-    background-color: #2696ecff;
-    color: #eee;
-    border-radius: 3px;
   }
 
   td {
@@ -27,44 +42,34 @@
   }
 
   td.name {
-    width: 60%;
-    text-align: center;
-  }
-
-  td.tag {
-    width: 17%;
+    text-align: left;
   }
 
   td.created {
-    width: 17%;
   }
 
-  @media (max-width: 767px) {
-    tr {
-      flex-direction: column;
-      align-items: center;
-      padding: 5px;
-    }
-
-    td {
-      margin: 0;
-      padding: 5px;
-    }
-
-    td.catalog,
-    td.tag,
-    td.created {
-      width: 32%;
-      width: 32%;
-      text-align: center;
-    }
+  button,
+  a {
+    cursor: pointer;
   }
 </style>
 
 <tr>
-  <td class="name">{name}</td>
-  <td class="tag">{tag}</td>
-  <td class="created">{new Date().toLocaleString()}</td>
+  <td class="name">{name}:{tag}</td>
+  <td class="created">
+    {!!manifests ? manifests.history[0].v1Compatibility.created.toLocaleString() : ''}
+  </td>
+  <td class="copy">
+    <button class="btn-copy" aria-label="Copy name" on:click={copyName}>
+      copy
+    </button>
+  </td>
+
+  <td class="desc">
+    <a class="a-desc" aria-label="Open info" href="/desc?name={name}&tag={tag}">
+      info
+    </a>
+  </td>
 </tr>
 
 <!--<tr
