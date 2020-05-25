@@ -1,8 +1,0 @@
-.DS_Store
-node_modules
-volumes/
-rolluo.config.js
-README.md
-nodemon.config.json
-docker-compose.yml
-src/

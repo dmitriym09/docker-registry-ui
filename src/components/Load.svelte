@@ -1,5 +1,5 @@
 <script>
-  export let table = null;
+  //export let table = null;
   export let input = null;
   export let btn = null;
 
