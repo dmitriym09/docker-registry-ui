@@ -1,5 +1,5 @@
 <script>
-  import { isBlocked, imgs } from "../stores.mjs";
+  import { isBlocked, imgs } from "../../stores.mjs";
 
   import DockerImg from "./DockerImg.svelte";
 
@@ -144,7 +144,9 @@
 <style>
   table {
     border-collapse: collapse;
+    width: 100%;
   }
+
   table :global(tr) {
     border-bottom: 1px solid lightgray;
   }
@@ -156,9 +158,17 @@
     text-align: left;
     vertical-align: middle;
     padding-bottom: 0.5rem;
+    box-sizing: border-box;
+    width: 100%;
   }
+
+  table :global(td) {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
   table :global(.name) {
-    width: 50%;
+    width: 70%;
   }
 
   table :global(.created) {
@@ -166,12 +176,7 @@
   }
 
   table :global(.copy-name) {
-    width: 10%;
-    text-align: right;
-  }
-
-  table :global(.info) {
-    width: 10%;
+    width: 5%;
     text-align: right;
   }
 
@@ -217,8 +222,7 @@
     <tr>
       <th class="name">Name</th>
       <th class="created">Created</th>
-      <th class="copy-name">Copy name</th>
-      <th class="info">Info</th>
+      <th class="copy-name" />
     </tr>
   </thead>
   <tbody>

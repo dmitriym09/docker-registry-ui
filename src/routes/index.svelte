@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import DockerImgs from "../components/DockerImgs.svelte";
+  import DockerImgs from "../components/index/DockerImgs.svelte";
 </script>
 
 <style>

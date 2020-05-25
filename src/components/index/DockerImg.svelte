@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import getManifests from "../helpers/manifests.mjs";
+  import getManifests from "../../helpers/manifests.mjs";
 
   export let name;
   export let tag;
@@ -33,53 +33,57 @@
   td {
     vertical-align: middle;
   }
-  /*tr {
-    margin: 0;
-    padding: 5px;
-  }
 
-  td {
-    margin: 0;
-    padding: 0;
-    user-select: none;
+  .copy-name {
+    text-align: right;
   }
-
-  td.name {
-    text-align: left;
-  }
-
-  td.created {
-  }
-*/
 
   .btn {
     cursor: pointer;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    margin: 0;
+    margin-left: auto;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    border: 1px lightgray solid;
+    border-radius: 3px;
+    background-color: #fefefe;
+    outline: none;
+    box-shadow: none;
   }
 
-  svg {
-    height: 1rem;
-    width: 1rem;
+  .btn svg {
+    height: 95%;
+    width: 95%;
+    display: block;
+  }
+
+  .btn :global(svg > *) {
+    transition: fill 0.1s ease-in;
+  }
+
+  .btn:hover :global(svg > *) {
+    fill: #2696ec;
+    transition: fill 0.1s ease-out;
   }
 </style>
 
 <tr>
-  <td class="name">{name}:{tag}</td>
+  <td class="name">
+    <a href="/desc?name={name}&tag={tag}">{name}:{tag}</a>
+  </td>
   <td class="created">
     {!!manifests ? manifests.history[0].v1Compatibility.created.toLocaleString() : ''}
   </td>
   <td class="copy-name">
     <button class="btn btn-copy" aria-label="Copy name" on:click={copyName}>
-      <svg viewBox="-40 0 512 512"><use href="#copy-icon" /></svg>
+      <svg viewBox="-40 0 512 512">
+        <use href="#copy-icon" />
+      </svg>
     </button>
-  </td>
-
-  <td class="info">
-    <a
-      class="btn a-desc"
-      aria-label="Open info"
-      href="/desc?name={name}&tag={tag}">
-      <svg viewBox="-40 0 431.45258 431.45258"><use href="#info-icon" /></svg>
-    </a>
   </td>
 </tr>
 

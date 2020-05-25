@@ -2,10 +2,6 @@
   import { onMount } from "svelte";
   import Svg from "../components/Svg.svelte";
   import Header from "../components/Header.svelte";
-  import DockerImgs from "../components/DockerImgs.svelte";
-  // import Save from "../components/Save.svelte";
-  // import Load from "../components/Load.svelte";
-  // import CopyUrl from "../components/CopyUrl.svelte";
   import Blocker from "../components/Blocker.svelte";
 
   import { isBlocked, imgs } from "../stores.mjs";
