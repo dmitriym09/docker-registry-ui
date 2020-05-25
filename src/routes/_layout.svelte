@@ -55,25 +55,40 @@
   }
 
   :global(body) {
-    color: #333;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    color: #33444C;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
       Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  }
+
+
+  :global(h1) {
+    text-align: center;
   }
 
   :global(a) {
     color: rgb(0, 100, 200);
     text-decoration: none;
+    transition: color .1s ease-in;
   }
 
   :global(a:hover) {
-    text-decoration: underline;
+    transition: color 0.1s ease-out, outline 0.1s ease-out;
+    color: rgb(0, 80, 160);
+  }
+
+  :global(a:focus) {
+    transition: color 0.1s ease-out, outline 0.1s ease-out;
+    outline-width: 1px;
+    outline-style: solid;
+    outline-color: #ff4900;
+    outline-offset: 5px;
   }
 
   :global(a:visited) {
-    color: rgb(0, 80, 160);
+    transition: color .1s ease-out;
   }
 
   :global(label) {
@@ -102,7 +117,6 @@
   }
 
   :global(button) {
-    color: #333;
     background-color: #f4f4f4;
     outline: none;
   }
@@ -129,29 +143,6 @@
     min-width: 20rem;
     min-height: 100%;
   }
-
-  /*.sticky {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-
-    padding-right: 20px;
-
-    position: sticky;
-    bottom: 10px;
-  }
-
-  @media (max-width: 767px) {
-    .page {
-      height: calc(100% - 75px);
-      margin-bottom: -75px;
-    }
-
-    .sticky {
-      justify-content: space-around;
-      padding-right: 0px;
-    }
-  }*/
 </style>
 
 <div class="page">
@@ -159,12 +150,6 @@
   <main>
     <slot />
   </main>
-
-  <!--<div class="sticky">
-    <CopyUrl {table} />
-    <Load {table} />
-    <Save {table} />
-  </div>-->
 
   <Blocker />
 </div>

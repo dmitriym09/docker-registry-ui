@@ -8,6 +8,28 @@
     align-items: center;
     justify-content: flex-end;
   }
+
+  .to-index {
+    display: block;
+    cursor: pointer;
+    transition: transform 0.1s ease-in;
+  }
+
+  .to-index:focus {
+    transform: scale(0.9);
+    outline-color: white;
+  }
+
+
+  .to-index:hover {
+    transform: scale(0.9);
+  }
+
+  .to-index:active {
+    transform: scale(0.8);
+    transition: transform 0.1s ease-out;
+  }
+
   svg {
     display: block;
     fill: #fff;
@@ -17,7 +39,7 @@
 </style>
 
 <header>
-  <a href="/">
+  <a href="/" class="to-index" title="Main page" tabindex="0">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMidYMid meet"

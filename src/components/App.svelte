@@ -12,6 +12,7 @@
 <style>
   .page {
     background-color: #fff;
+    color: #33444C;
     margin: 0;
     padding: 0;
   }

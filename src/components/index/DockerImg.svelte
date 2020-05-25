@@ -34,6 +34,26 @@
     vertical-align: middle;
   }
 
+  a {
+    color: #33444c;
+    text-decoration: none;
+    transition: color 0.1s ease-in;
+  }
+
+  a:hover {
+    text-decoration: underline;
+    transition: color 0.1s ease-out;
+    color: #2696ec;
+  }
+
+  a:focus {
+    transition: color 0.1s ease-out, outline 0.1s ease-out;
+    outline-width: 1px;
+    outline-style: solid;
+    outline-color: #ff4900;
+    outline-offset: 5px;
+  }
+
   .copy-name {
     text-align: right;
   }
@@ -48,16 +68,23 @@
     padding: 0;
     justify-content: center;
     align-items: center;
-    border: 1px lightgray solid;
+    border: none;
     border-radius: 3px;
     background-color: #fefefe;
-    outline: none;
     box-shadow: none;
   }
 
+  .btn:focus {
+    transition: color 0.1s ease-out, outline 0.1s ease-out;
+    outline-width: 1px;
+    outline-style: solid;
+    outline-color: #ff4900;
+    outline-offset: 5px;
+  }
+
   .btn svg {
-    height: 95%;
-    width: 95%;
+    height: 100%;
+    width: 100%;
     display: block;
   }
 
@@ -73,13 +100,13 @@
 
 <tr>
   <td class="name">
-    <a href="/desc?name={name}&tag={tag}">{name}:{tag}</a>
+    <a href="/desc?name={name}&tag={tag}" tabindex="2">{name}:{tag}</a>
   </td>
   <td class="created">
     {!!manifests ? manifests.history[0].v1Compatibility.created.toLocaleString() : ''}
   </td>
   <td class="copy-name">
-    <button class="btn btn-copy" aria-label="Copy name" on:click={copyName}>
+    <button tabindex="3" class="btn btn-copy" aria-label="Copy name" on:click={copyName}>
       <svg viewBox="-40 0 512 512">
         <use href="#copy-icon" />
       </svg>
